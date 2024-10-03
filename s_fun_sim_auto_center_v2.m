@@ -1,6 +1,6 @@
 %Ejem 6.1 libro gockenbach
 
-function [sys, x0, str, ts] = s_fun_sim_auto_center_v2(t,x,u,flag)%Se retiro de las entradas x0 que corresponde a las condiones iniciales
+function [sys, x0, str, ts] = s_fun_sim_auto_center_v2(t,x1,x2,u,flag)%Se retiro de las entradas x0 que corresponde a las condiones iniciales
 switch flag
     case 0
         s=simsizes;
@@ -46,11 +46,10 @@ switch flag
         b=1/(h^2);
         c=(2+k*h^2)/(h^2);
         %Definir vector de ecuaciones diferenciales
-        U1=zeros(n);
-        U2=zeros(n);
-        x=zeros(2*n);
-        x1=zeros(n);
-        x2=zeros(n);
+        U1=zeros(1,n);
+        U2=zeros(1,n);
+        x1=zeros(1,n);
+        x2=zeros(1,n);
         %Ciclo para llenado de ecuaciones en un vector de derivadas de U1
         for i=1:n
             if i ==1
@@ -73,14 +72,13 @@ switch flag
             end
         end
         %Vector de derivada
-        x=[x1,x2];
         dU=[U1,U2];
         sys=dU;
     case 3
         %Ecuaciones de salida
         
         %Vector de variables de salida
-        sys=x;
+        sys=[x1,x2];
     case {2 4 9}
         sys=[];
         otherwise

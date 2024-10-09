@@ -1,6 +1,6 @@
 %Ejem 6.1 libro gockenbach
 
-function [sys, x0, str, ts] = s_fun_simultaneo_auto(t,x,u,flag)%Se retiro de las entradas x0 que corresponde a las condiones iniciales
+function [sys, x0, str, ts] = s_fun_sim_auto_center(t,x,u,flag)%Se retiro de las entradas x0 que corresponde a las condiones iniciales
 switch flag
     case 0
         s=simsizes;
@@ -39,26 +39,29 @@ switch flag
     case 1
         %Coeficientes
         L=1;
-        n=10;
+        n=10; %n debe ser par
         k=10;
         h=n/L;
+        a=1/(2*h);
+        b=1/(h^2);
+        c=(2+k*h^2)/(h^2);
         %Definir vector de ecuaciones diferenciales
         dU=zeros(1,n);
         %Ciclo para llenado de ecuaciones en un vector de derivadas
         for i=1:n
             if i<=(n/2)
                 if i==1
-                    dU(1,i)=((1-k*h)/h)*x(i)+k*x((n/2)+i);
+                    dU(1,i)=a*x(i+1) - k*x(i) + k*x((n/2)+1); %Cuando i=1 para U1 y se aplican las condiciones de frontera
                 else
-                    dU(1,i) = ((1-k*h)/h)*x(i)-(1/h)*x(i-1)+k*x((n/2)+i);
+                    dU(1,i) = a*x(i+1) - k*x(i) - a*x(i-1) + k*x((n/2)+1);
                 end
             else
-                if i==(n/2)+1
-                    dU(1,i)= -((2+k*h^2)/h^2)*x(i)+ (1/h^2)*x(i+1) +k*x(i-(n/2));
+                if i==(n/2)+1  %Cuando i=1 para U2 y se aplican las condiciones de frontera
+                    dU(1,i)= - c*x(i) + b*x(i+1) + k*x(i-(n/2));
                 elseif i==10
-                    dU(1,i)= (1/(h^2))*x(i-1) -((2+k*h^2)/(h^2))*x(i) +k*x(i-(n/2));
+                    dU(1,i)= b*x(i-1) - c*x(i) + k*x(i-(n/2));
                 else
-                    dU(1,i)= (1/(h^2))*x(i-1) -((2+k*h^2)/(h^2))*x(i)+ (1/h^2)*x(i+1) +k*x(i-(n/2));
+                    dU(1,i)= b*x(i-1) - c*x(i) + b*x(i+1) + k*x(i-(n/2));
                 end    
             end
         end

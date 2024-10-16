@@ -4,12 +4,13 @@ clc
 L=1;
 n=20;
 k=10;
-h=L/(n/2);
+m=n/2;
+h=L/(m-1);
 a=1/(2*h);
 b=1/(h^2);
 c=(2+k*h^2)/(h^2);
 A=zeros(n,n);
-m=n/2;
+
 %Ciclo para llenado de coeficientes de una matriz
         for i=1:n
             if  i< m+1
@@ -45,8 +46,8 @@ m=n/2;
                 end    
             end
         end
-x0_1=zeros(1,4);
-x0_2=zeros(1,4);
+x0_1=zeros(1,m);
+x0_2=zeros(1,m);
         count=0;
         for i=1:m  %Vector de condiciones iniciales para U1(0)
             count=count+h;

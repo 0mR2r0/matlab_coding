@@ -69,6 +69,7 @@ switch flag
                 end
            
         end
+        disp(U)
         %Vector de derivada
         
         sys=U;
